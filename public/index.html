@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>יומן מדורי</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="toast" class="toast hidden"></div>
+
+  <section id="loginScreen" class="login-screen">
+    <div class="auth-shell">
+      <div class="auth-hero">
+        <div class="brand-mark"><img src="/icons/icon-192.png" alt="יומן מדורי"></div>
+        <h1>יומן מדור </h1>
+        <p>ניהול עבודה מהבית, חופשות וסידורים אישיים במקום אחד    .</p>
+        <div class="hero-stats">
+          <span>יומן אישי</span>
+          <span>יומן מדורי</span>
+          <span>אישורי מנהל</span>
+        </div>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button id="showLoginBtn" class="auth-tab active" type="button">כניסה</button>
+          <button id="showSignupBtn" class="auth-tab" type="button">הרשמה</button>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+          <h2>כניסה למערכת</h2>
+          <p>הכניסה מתבצעת באמצעות תעודת זהות בלבד.</p>
+          <label>תעודת זהות</label>
+          <input id="loginId" inputmode="numeric" maxlength="9" autocomplete="username" placeholder="Password" required>
+          <button type="submit">כניסה</button>
+          <small>Created by: Ori Gigi</small>
+        </form>
+
+        <form id="signupForm" class="auth-form hidden">
+          <h2>הרשמה לעובד חדש</h2>
+          <p>לאחר ההרשמה תוכל להיכנס מיד למערכת כעובד.</p>
+          <label>שם מלא</label>
+          <input id="signupFullName" autocomplete="name" required>
+          <label>תעודת זהות</label>
+          <input id="signupId" inputmode="numeric" maxlength="9" autocomplete="username" required>
+          <label>בחירת צבע אישי</label>
+          <div id="signupColorPalette" class="color-palette auth-colors"></div>
+          <input type="hidden" id="signupColor" required>
+          <button type="submit">יצירת משתמש</button>
+          <small>הרשמה יוצרת משתמש בהרשאת עובד. שינוי הרשאה מתבצע רק על ידי מנהל.</small>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <main id="appScreen" class="app hidden">
+    <header class="topbar">
+      <div class="topbar-title">
+        <div class="brand-mark small"><img src="/icons/icon-192.png" alt="יומן מדור"></div>
+        <div>
+          <h1>יומן מדור</h1>
+          <span id="currentUserText"></span>
+        </div>
+      </div>
+      <nav>
+        <button class="tab-btn active" data-tab="mine">היומן שלי</button>
+        <button class="tab-btn" data-tab="department">יומן מדורי</button>
+        <button id="adminTabBtn" class="tab-btn hidden" data-tab="admin">ניהול מנהל</button>
+        <button id="logoutBtn" class="secondary">יציאה</button>
+      </nav>
+    </header>
+
+    <section id="mineTab" class="tab-content">
+      <div class="mine-desktop-layout">
+    <section id="eventPanel" class="panel actions-panel event-designer-card">
+      <div class="section-title event-designer-title">
+        <div>
+          <h2>הוספת אירוע</h2>
+          <p>בחר סוג אירוע, טווח תאריכים והאם להסתיר פירוט ביומן המדורי.</p>
+        </div>
+        <div class="event-title-icon"><img src="/icons/icon-192.png" alt=""></div>
+      </div>
+      <form id="eventForm" class="event-form modern-event-form">
+        <input type="hidden" id="eventId">
+        <div id="staffUserField" class="hidden">
+          <label>עובד</label>
+          <select id="eventUser"></select>
+        </div>
+        <div class="form-field event-type-field">
+          <label>סוג אירוע</label>
+          <div class="input-with-icon">
+            <select id="eventType"></select>
+            <span class="field-icon icon-briefcase" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>מתאריך</label>
+          <div class="input-with-icon">
+            <input id="startDate" type="date" required>
+            <span class="field-icon icon-calendar" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>עד תאריך</label>
+          <div class="input-with-icon">
+            <input id="endDate" type="date" required>
+            <span class="field-icon icon-calendar" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div id="timeModeBox" class="time-mode-box wide">
+          <label>סוג סימון</label>
+          <div class="time-mode-options">
+            <label class="time-mode-option active" id="allDayOption">
+              <input id="allDayMode" type="radio" name="timeMode" value="allDay" checked>
+              <span>יום שלם</span>
+            </label>
+            <label class="time-mode-option" id="hoursOption">
+              <input id="hoursMode" type="radio" name="timeMode" value="hours">
+              <span>בחירת שעות</span>
+            </label>
+          </div>
+          <input id="allDay" type="checkbox" checked class="hidden">
+          <small id="timeModeHint" class="field-hint">בחירת שעות זמינה רק כאשר מתאריך ועד תאריך הם אותו יום.</small>
+        </div>
+        <div id="timeFields" class="time-fields hidden wide">
+          <div>
+            <label>משעה</label>
+            <input id="startTime" type="time">
+          </div>
+          <div>
+            <label>עד שעה</label>
+            <input id="endTime" type="time">
+          </div>
+        </div>
+        <div class="wide note-field">
+          <label>הערה / סיבה</label>
+          <textarea id="eventNote" maxlength="200" placeholder="רשום הערה או סיבה לאירוע..."></textarea>
+          <small class="char-hint">0/200</small>
+        </div>
+        <div class="event-help wide">
+          <span class="info-dot">i</span>
+          <div>
+            <strong>שימו לב</strong>
+            <p>בחר "יום שלם" לסימון מלא, או "בחירת שעות" כאשר האירוע מתרחש באותו תאריך.</p>
+          </div>
+        </div>
+        <label class="check-row private-row">
+          <input id="isPrivate" type="checkbox">
+          הסתר פירוט ביומן המדורי
+        </label>
+        <div class="form-buttons event-actions">
+          <button type="submit">שמירה</button>
+          <button type="button" id="resetEventForm" class="secondary">ביטול</button>
+        </div>
+      </form>
+    </section>
+
+      <div class="panel mine-calendar-panel">
+          <div class="calendar-head">
+            <button id="minePrev" class="secondary">‹</button>
+            <h2 id="mineTitle"></h2>
+            <button id="mineNext" class="secondary">›</button>
+          </div>
+          <div class="calendar-tools">
+            <label>תצוגה</label>
+            <select id="mineView">
+              <option value="month" selected>חודש</option>
+              <option value="week">שבוע</option>
+              <option value="day">יום</option>
+            </select>
+          </div>
+          <div id="mineCalendar" class="calendar"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>האירועים שלי</h2>
+        <div id="mineList" class="cards-list"></div>
+      </div>
+    </section>
+
+    <section id="departmentTab" class="tab-content hidden">
+      <div class="panel">
+        <div class="calendar-head">
+          <button id="deptPrev" class="secondary">‹</button>
+          <h2 id="deptTitle"></h2>
+          <button id="deptNext" class="secondary">›</button>
+        </div>
+        <div class="calendar-tools">
+          <label>תצוגה</label>
+          <select id="deptView">
+            <option value="month" selected>חודש</option>
+            <option value="week">שבוע</option>
+            <option value="day">יום</option>
+          </select>
+        </div>
+        <div id="deptCalendar" class="calendar"></div>
+      </div>
+      <div class="panel">
+        <h2>כלל האירועים</h2>
+        <div id="departmentList" class="cards-list"></div>
+      </div>
+    </section>
+
+    <section id="adminTab" class="tab-content hidden">
+      <div class="admin-grid">
+        <div class="panel">
+          <h2>ניהול משתמשים</h2>
+          <form id="userForm" class="user-form">
+            <input type="hidden" id="userId">
+            <label>שם מלא</label>
+            <input id="fullName" required>
+            <label>תעודת זהות</label>
+            <input id="idNumber" inputmode="numeric" maxlength="9" required>
+            <label>הרשאה</label>
+            <select id="role">
+              <option value="employee">עובד</option>
+              <option value="staff">מנהל</option>
+            </select>
+            <label>צבע קבוע</label>
+            <div id="colorPalette" class="color-palette"></div>
+            <input type="hidden" id="userColor" required>
+            <div class="form-buttons">
+              <button type="submit">שמירת משתמש</button>
+              <button type="button" id="resetUserForm" class="secondary">ניקוי</button>
+            </div>
+          </form>
+          <div id="usersList" class="users-list"></div>
+        </div>
+
+        <div class="panel">
+          <h2>אישורי מנהל</h2>
+          <div id="approvalList" class="cards-list"></div>
+        </div>
+
+        <div class="panel">
+          <h2>ייצוא נתונים</h2>
+          <p>הייצוא יוצר קובץ CSV בתיקיית exports ומאפשר הורדה ידנית.</p>
+          <button id="exportBtn">ייצוא CSV עכשיו</button>
+          <div id="exportsList" class="cards-list compact"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

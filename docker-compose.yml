@@ -1,0 +1,12 @@
+services:
+  attendance-system:
+    build: .
+    container_name: attendance-system
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./database:/app/database
+      - ./exports:/app/exports
+    restart: unless-stopped
