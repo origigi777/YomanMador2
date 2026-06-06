@@ -1,15 +1,15 @@
-# מערכת יומן מדורי לניהול עבודה מהבית והיעדרויות
+# Department Attendance & Remote Work Management System
 
-מערכת Web פשוטה לניהול יומן אישי, יומן מדורי, הרשאות עובד/מנהל, אישורי מנהל, צבע קבוע לעובד וייצוא CSV.
+A lightweight web-based system for managing personal calendars, department-wide calendars, employee/manager permissions, manager approvals, employee color coding, and CSV exports.
 
-## משתמש ראשוני
+## Default Administrator Account
 
-- תעודת זהות: `000000000`
-- הרשאה: מנהל
+* ID Number: `000000000`
+* Role: Administrator
 
-לאחר כניסה ראשונית מומלץ ליצור משתמשי מנהל/עובדים אמיתיים ולמחוק או להשאיר את המשתמש הראשוני לפי הצורך.
+After the first login, it is recommended to create real administrator and employee accounts and either remove or keep the default administrator account as needed.
 
-## הרצה מקומית
+## Local Development
 
 ```bash
 cp .env.example .env
@@ -17,45 +17,45 @@ npm install
 npm start
 ```
 
-כניסה בדפדפן:
+Open in your browser:
 
 ```text
 http://localhost:3000
 ```
 
-## הרצה עם Docker
+## Running with Docker
 
 ```bash
 cp .env.example .env
 docker compose up --build
 ```
 
-## שמירת נתונים קבועה
+## Persistent Data Storage
 
-קובץ הנתונים נשמר כאן:
+The database file is stored in:
 
 ```text
 database/attendance.db
 ```
 
-ב-Docker מוגדר Volume כך שהתיקייה `database` נשמרת מחוץ לקונטיינר ולא נמחקת בכל הפעלה.
+Docker volumes are configured so the `database` directory is stored outside the container and is not deleted when the container is restarted.
 
-## ייצוא CSV
+## CSV Export
 
-קבצי CSV נוצרים בתיקייה:
+CSV files are generated in:
 
 ```text
 exports/
 ```
 
-אפשר להפעיל ייצוא אוטומטי דרך `.env`:
+Automatic exports can be enabled through the `.env` file:
 
 ```text
 AUTO_EXPORT_ENABLED=true
 AUTO_EXPORT_CRON=0 1 * * *
 ```
 
-## מבנה הפרויקט
+## Project Structure
 
 ```text
 attendance-system/
@@ -72,3 +72,16 @@ attendance-system/
     ├── manifest.json
     └── service-worker.js
 ```
+
+## Features
+
+* Personal calendar for each employee
+* Shared department calendar
+* Employee and administrator roles
+* Approval workflow for attendance and remote work events
+* Employee-specific color coding
+* Mobile-friendly responsive design
+* Progressive Web App (PWA) support
+* CSV export and backup capabilities
+* Docker deployment support
+* SQLite-based persistent storage
